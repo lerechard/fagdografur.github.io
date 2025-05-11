@@ -36,6 +36,7 @@
       background-color: rgba(26, 26, 26, 1);
       transition: background-color 0.4s ease;
       overflow: hidden;
+      cursor: pointer;
     }
 
     header::before {
@@ -48,11 +49,11 @@
       transition: opacity 0.4s ease;
     }
 
-    header:hover {
+    header.active {
       background-color: rgba(26, 26, 26, 0.4);
     }
 
-    header:hover::before {
+    header.active::before {
       opacity: 1;
     }
 
@@ -71,7 +72,7 @@
     .gallery-row {
       overflow: hidden;
       position: relative;
-      padding: 1rem 0; /* Dynamic spacing */
+      padding: 1rem 0;
     }
 
     .gallery-track {
@@ -169,7 +170,7 @@
       }
 
       .gallery-track img {
-        height: 180px; /* Smaller for mobile */
+        height: 180px;
       }
 
       section.form-section {
@@ -234,6 +235,41 @@
   </section>
 
   <script>
+    const header = document.getElementById('main-header');
+    const titleSpan = document.getElementById('title-text');
+    const originalText = titleSpan.textContent;
+    const altText = "🏳️‍🌈+🐕‍🦺=📸";
+
+    let isActive = false;
+
+    header.addEventListener("mouseenter", () => {
+      header.classList.add("active");
+      titleSpan.style.opacity = 0;
+      setTimeout(() => {
+        titleSpan.textContent = altText;
+        titleSpan.style.opacity = 1;
+      }, 200);
+    });
+
+    header.addEventListener("mouseleave", () => {
+      header.classList.remove("active");
+      titleSpan.style.opacity = 0;
+      setTimeout(() => {
+        titleSpan.textContent = originalText;
+        titleSpan.style.opacity = 1;
+      }, 200);
+    });
+
+    header.addEventListener("click", () => {
+      isActive = !isActive;
+      header.classList.toggle("active", isActive);
+      titleSpan.style.opacity = 0;
+      setTimeout(() => {
+        titleSpan.textContent = isActive ? altText : originalText;
+        titleSpan.style.opacity = 1;
+      }, 200);
+    });
+
     document.getElementById('shoot-form').addEventListener('submit', function (e) {
       e.preventDefault();
       const form = new FormData(this);
@@ -248,27 +284,6 @@
         body: JSON.stringify({ content: fields.join("\n") })
       }).then(() => alert("Request submitted!"))
         .catch(() => alert("There was an error. Try again later."));
-    });
-
-    const header = document.getElementById('main-header');
-    const titleSpan = document.getElementById('title-text');
-    const originalText = titleSpan.textContent;
-    const altText = "🏳️‍🌈+🐕‍🦺=📸";
-
-    header.addEventListener("mouseenter", () => {
-      titleSpan.style.opacity = 0;
-      setTimeout(() => {
-        titleSpan.textContent = altText;
-        titleSpan.style.opacity = 1;
-      }, 200);
-    });
-
-    header.addEventListener("mouseleave", () => {
-      titleSpan.style.opacity = 0;
-      setTimeout(() => {
-        titleSpan.textContent = originalText;
-        titleSpan.style.opacity = 1;
-      }, 200);
     });
   </script>
 </body>
