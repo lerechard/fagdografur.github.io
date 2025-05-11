@@ -31,6 +31,7 @@
       padding: 2rem 1rem;
       text-align: center;
       border-bottom: 4px solid var(--border-dark);
+      margin-bottom: 1rem; /* HALVED from 2rem */
     }
 
     header h1 {
@@ -47,19 +48,15 @@
 
     .gallery-row {
       overflow: hidden;
-      white-space: nowrap;
       position: relative;
+      min-height: 320px;
     }
 
     .gallery-track {
-      display: inline-flex;
+      display: flex;
       gap: var(--scroll-gap);
-      padding: 1rem 0;
-      animation: scroll-left linear infinite;
-    }
-
-    .gallery-row[data-speed="1"] .gallery-track {
-      animation-duration: 30s;
+      width: fit-content;
+      animation: scroll-left 30s linear infinite;
     }
 
     .gallery-row[data-speed="0.7"] .gallery-track {
@@ -172,6 +169,7 @@
     <h1><span id="title-text">FAGDOGRAFUR</span></h1>
   </header>
 
+  <!-- Row 1 -->
   <div class="gallery-row" data-speed="1">
     <div class="gallery-track">
       <img src="dog1.png"/><img src="dog2.png"/><img src="dog3.png"/><img src="dog4.png"/><img src="dog5.png"/>
@@ -179,6 +177,7 @@
     </div>
   </div>
 
+  <!-- Row 2 -->
   <div class="gallery-row" data-speed="0.7">
     <div class="gallery-track">
       <img src="dog6.png"/><img src="dog7.png"/><img src="dog8.png"/><img src="dog9.png"/><img src="dog10.png"/>
@@ -186,6 +185,7 @@
     </div>
   </div>
 
+  <!-- Row 3 -->
   <div class="gallery-row" data-speed="1.3">
     <div class="gallery-track">
       <img src="dog11.png"/><img src="dog12.png"/><img src="dog13.png"/><img src="dog14.png"/><img src="dog15.png"/>
@@ -193,6 +193,7 @@
     </div>
   </div>
 
+  <!-- Form -->
   <section class="form-section">
     <h2>Request a Shoot</h2>
     <form id="shoot-form">
@@ -221,8 +222,9 @@
     </form>
   </section>
 
+  <!-- Script -->
   <script>
-    // Form submission to Discord webhook
+    // Discord form submission
     document.getElementById('shoot-form').addEventListener('submit', function (e) {
       e.preventDefault();
       const form = new FormData(this);
@@ -239,7 +241,7 @@
         .catch(() => alert("There was an error. Try again later."));
     });
 
-    // Title hover blend effect
+    // Title hover text change
     const titleSpan = document.getElementById('title-text');
     const originalText = titleSpan.textContent;
     const altText = "🏳️‍🌈+🐕‍🦺=📸";
