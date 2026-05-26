@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NHolt26</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    header { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    h1 { margin:0; font-size: 22px; }
+    h2 { margin: 28px 0 0; font-size: 18px; }
+    #status { color:#555; font-size: 14px; }
+
+    .grid { margin-top: 16px; display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+    .card { border: 1px solid #e6e6e6; border-radius: 14px; overflow:hidden; background:#fff; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .thumb { width:100%; height: 160px; object-fit: cover; display:block; background:#fafafa; }
+    .meta { padding: 10px; display:flex; flex-direction:column; gap:8px; }
+    .name { font-size: 13px; color:#222; word-break: break-word; }
+    .actions { display:flex; gap:8px; }
+    .actions a { flex:1; text-align:center; padding: 8px 10px; border-radius: 10px; text-decoration:none; border:1px solid #ddd; color:#111; }
+    .actions a:hover { background:#f6f6f6; }
+
+    .unlock-box {
+      margin-top: 32px;
+      padding: 18px;
+      border: 1px solid #e6e6e6;
+      border-radius: 14px;
+      background: #fafafa;
+      max-width: 420px;
+    }
+
+    .unlock-box label { display:block; font-weight:600; margin-bottom:8px; }
+    .unlock-row { display:flex; gap:8px; }
+    .unlock-row input {
+      flex:1;
+      padding: 10px;
+      border:1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    .unlock-row button {
+      padding: 10px 14px;
+      border:1px solid #ccc;
+      border-radius: 10px;
+      background:white;
+      cursor:pointer;
+    }
+    .unlock-row button:hover { background:#f2f2f2; }
+    #unlockMessage { margin-top:10px; font-size:14px; color:#555; }
+    #lockedSection { display:none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title">NHolt26</h1>
+    <div id="status">Loading…</div>
+  </header>
+
+  <div id="shownGrid" class="grid"></div>
+
+  <section class="unlock-box">
+    <label for="passcodeInput">Enter gallery code to view more photos</label>
+    <div class="unlock-row">
+      <input id="passcodeInput" type="password" autocomplete="off" placeholder="Passcode" />
+      <button id="unlockButton">View Gallery</button>
+    </div>
+    <div id="unlockMessage"></div>
+  </section>
+
+  <section id="lockedSection">
+    <h2>Additional Photos</h2>
+    <div id="lockedGrid" class="grid"></div>
+  </section>
+
+  <script>
+    const shownGrid = document.getElementById("shownGrid");
+    const lockedGrid = document.getElementById("lockedGrid");
+    const lockedSection = document.getElementById("lockedSection");
+    const statusEl = document.getElementById("status");
+    const titleEl = document.getElementById("title");
+    const passcodeInput = document.getElementById("passcodeInput");
+    const unlockButton = document.getElementById("unlockButton");
+    const unlockMessage = document.getElementById("unlockMessage");
+
+    const MANIFEST_URL = "./manifest.json";
+
+    let lockedImages = [];
+    let passcode = "";
+
+    function isProbablyImage(name) {
+      return /\.(jpe?g|png|gif|webp|bmp|svg|avif|heic)$/i.test(name);
+    }
+
+    function imageUrl(filename) {
+      return "./" + encodeURIComponent(filename).replaceAll("%2F", "/");
+    }
+
+    function addCard(filename, grid) {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const img = document.createElement("img");
+      img.className = "thumb";
+      img.loading = "lazy";
+      img.alt = filename;
+      img.src = imageUrl(filename);
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const nameEl = document.createElement("div");
+      nameEl.className = "name";
+      nameEl.textContent = filename;
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const open = document.createElement("a");
+      open.href = img.src;
+      open.target = "_blank";
+      open.rel = "noopener";
+      open.textContent = "Open";
+
+      const dl = document.createElement("a");
+      dl.href = img.src;
+      dl.download = filename;
+      dl.textContent = "Download";
+
+      actions.appendChild(open);
+      actions.appendChild(dl);
+      meta.appendChild(nameEl);
+      meta.appendChild(actions);
+      card.appendChild(img);
+      card.appendChild(meta);
+      grid.appendChild(card);
+    }
+
+    function unlockPhotos() {
+      if (passcodeInput.value === passcode) {
+        lockedGrid.innerHTML = "";
+        lockedImages.forEach(filename => addCard(filename, lockedGrid));
+        lockedSection.style.display = "block";
+        unlockMessage.textContent = `Unlocked ${lockedImages.length} photo(s).`;
+      } else {
+        unlockMessage.textContent = "We couldnt find that gallery.";
+      }
+    }
+
+    async function main() {
+      try {
+        const res = await fetch(MANIFEST_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load manifest.json (HTTP ${res.status})`);
+
+        const manifest = await res.json();
+
+        titleEl.textContent = manifest.title || "Gallery";
+        passcode = String(manifest.passcode || "");
+
+        const shownImages = Array.isArray(manifest.shownImages)
+          ? manifest.shownImages.filter(isProbablyImage)
+          : [];
+
+        lockedImages = Array.isArray(manifest.lockedImages)
+          ? manifest.lockedImages.filter(isProbablyImage)
+          : [];
+
+        shownImages.forEach(filename => addCard(filename, shownGrid));
+
+        statusEl.textContent =
+          `Showing ${shownImages.length} photo(s). ${lockedImages.length} locked.`;
+
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Error loading manifest.json. Check file path + GitHub Pages build.";
+      }
+    }
+
+    unlockButton.addEventListener("click", unlockPhotos);
+    passcodeInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") unlockPhotos();
+    });
+
+    main();
+  </script>
+</body>
+</html>
