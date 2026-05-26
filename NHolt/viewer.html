@@ -61,7 +61,7 @@
   <section class="unlock-box">
     <label for="passcodeInput">Enter gallery code to view more photos</label>
     <div class="unlock-row">
-      <input id="passcodeInput" type="password" autocomplete="off" placeholder="Passcode" />
+      <input id="passcodeInput" type="password" autocomplete="off" placeholder="You can find this code in your receipt email" />
       <button id="unlockButton">View Gallery</button>
     </div>
     <div id="unlockMessage"></div>
@@ -167,7 +167,7 @@
         shownImages.forEach(filename => addCard(filename, shownGrid));
 
         statusEl.textContent =
-          `Showing ${shownImages.length} photo(s). ${lockedImages.length} locked.`;
+          `Showing ${shownImages.length} photo(s).`;
 
       } catch (err) {
         console.error(err);
