@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Shoot estimate</title>
+  <style>
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --muted: #999;
+      --line: #333;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 48px;
+      font-size: clamp(32px, 7vw, 64px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-weight: 700;
+    }
+
+    .row {
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .row:last-of-type {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .row-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: baseline;
+      margin-bottom: 18px;
+    }
+
+    label,
+    .label {
+      font-weight: 700;
+    }
+
+    .value {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .duration {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border: 1px solid var(--line);
+    }
+
+    button,
+    input {
+      font: inherit;
+      color: inherit;
+    }
+
+    .duration button {
+      min-height: 48px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .duration button:last-child {
+      border-right: 0;
+    }
+
+    .duration button[aria-pressed="true"] {
+      background: #fff;
+      color: #000;
+    }
+
+    .range-wrap {
+      display: grid;
+      grid-template-columns: 1fr 84px;
+      gap: 16px;
+      align-items: center;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #fff;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      height: 44px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+
+    .check-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: #fff;
+    }
+
+    #groupOptions {
+      display: none;
+      padding-top: 24px;
+    }
+
+    #groupOptions.active {
+      display: block;
+    }
+
+    .subrow + .subrow {
+      margin-top: 24px;
+    }
+
+    .total {
+      margin-top: 48px;
+    }
+
+    .total-label {
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .price {
+      font-size: clamp(64px, 16vw, 120px);
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .summary {
+      margin-top: 20px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .copy {
+      margin-top: 28px;
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--fg);
+      border-radius: 0;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .copy:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 18px; }
+
+      h1 { margin-bottom: 34px; }
+
+      .duration {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .duration button:nth-child(3) {
+        border-right: 0;
+      }
+
+      .duration button:nth-child(-n+3) {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .duration button:nth-child(4),
+      .duration button:nth-child(5) {
+        border-right: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Shoot estimate</h1>
+
+    <section class="row">
+      <div class="row-head">
+        <div class="label">Duration</div>
+        <div class="value" id="durationValue">1 hour</div>
+      </div>
+
+      <div class="duration" id="durationButtons">
+        <button type="button" data-hours="0.5" aria-pressed="false">30m</button>
+        <button type="button" data-hours="1" aria-pressed="true">1h</button>
+        <button type="button" data-hours="1.5" aria-pressed="false">1.5h</button>
+        <button type="button" data-hours="2" aria-pressed="false">2h</button>
+        <button type="button" data-hours="3" aria-pressed="false">3h</button>
+        <button type="button" data-hours="4" aria-pressed="false">4h</button>
+      </div>
+    </section>
+
+    <section class="row">
+      <div class="row-head">
+        <label for="photos">Final exported photos</label>
+        <div class="value" id="photosValue">12</div>
+      </div>
+
+      <div class="range-wrap">
+        <input id="photos" type="range" min="5" max="80" value="12" step="1">
+        <input id="photosNumber" type="number" min="5" max="80" value="12" step="1">
+      </div>
+    </section>
+
+    <section class="row">
+      <label class="check-row" for="groupEvent">
+        <span>Group event</span>
+        <input id="groupEvent" type="checkbox">
+      </label>
+
+      <div id="groupOptions">
+        <div class="subrow">
+          <div class="row-head">
+            <label for="attendees">Attendees</label>
+            <div class="value" id="attendeesValue">20</div>
+          </div>
+          <div class="range-wrap">
+            <input id="attendees" type="range" min="2" max="100" value="20" step="1">
+            <input id="attendeesNumber" type="number" min="2" max="100" value="20" step="1">
+          </div>
+        </div>
+
+        <div class="subrow">
+          <div class="row-head">
+            <label for="groupPhotos">Group photos</label>
+            <div class="value" id="groupPhotosValue">3</div>
+          </div>
+          <div class="range-wrap">
+            <input id="groupPhotos" type="range" min="0" max="20" value="3" step="1">
+            <input id="groupPhotosNumber" type="number" min="0" max="20" value="3" step="1">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="total">
+      <div class="total-label">Estimated total</div>
+      <p class="price" id="price">$215</p>
+      <div class="summary" id="summary"></div>
+      <button type="button" class="copy" id="copy">Copy estimate</button>
+    </section>
+  </main>
+
+  <script>
+    const WEBHOOK_URL =
+      "https://discord.com/api/webhooks/1557506619666075658/XjeBIcC6G9I5mRl-DB93sws-RT_4Fw7hq5WO7xQs_XsFDTVDxK7ce3YoXqoL48W9oNpn";
+
+    const PRICING = {
+      duration: {
+        "0.5": 110,
+        "1": 175,
+        "1.5": 240,
+        "2": 300,
+        "3": 410,
+        "4": 520
+      },
+      includedPhotos: 8,
+      photoTier1End: 20,
+      photoTier2End: 40,
+      photoTier1: 10,
+      photoTier2: 8,
+      photoTier3: 6,
+      groupBase: 65,
+      includedAttendees: 10,
+      extraAttendee: 2,
+      includedGroupPhotos: 2,
+      extraGroupPhoto: 12
+    };
+
+    const state = {
+      hours: 1,
+      photos: 12,
+      groupEvent: false,
+      attendees: 20,
+      groupPhotos: 3
+    };
+
+    const $ = id => document.getElementById(id);
+    const durationButtons = [...document.querySelectorAll("[data-hours]")];
+
+    function money(value) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function durationLabel(hours) {
+      if (hours === 0.5) return "30 minutes";
+      if (hours === 1) return "1 hour";
+      return `${hours} hours`;
+    }
+
+    function editingPrice(count) {
+      let remaining = Math.max(0, count - PRICING.includedPhotos);
+      let total = 0;
+
+      const firstTier = Math.min(
+        remaining,
+        PRICING.photoTier1End - PRICING.includedPhotos
+      );
+      total += firstTier * PRICING.photoTier1;
+      remaining -= firstTier;
+
+      if (remaining > 0) {
+        const secondTier = Math.min(
+          remaining,
+          PRICING.photoTier2End - PRICING.photoTier1End
+        );
+        total += secondTier * PRICING.photoTier2;
+        remaining -= secondTier;
+      }
+
+      if (remaining > 0) total += remaining * PRICING.photoTier3;
+      return total;
+    }
+
+    function calculate() {
+      let total = PRICING.duration[String(state.hours)];
+      total += editingPrice(state.photos);
+
+      if (state.groupEvent) {
+        total += PRICING.groupBase;
+        total += Math.max(0, state.attendees - PRICING.includedAttendees) * PRICING.extraAttendee;
+        total += Math.max(0, state.groupPhotos - PRICING.includedGroupPhotos) * PRICING.extraGroupPhoto;
+      }
+
+      return total;
+    }
+
+    function summaryText() {
+      let text = `${durationLabel(state.hours)} · ${state.photos} final photos`;
+
+      if (state.groupEvent) {
+        text += ` · ${state.attendees} attendees · ${state.groupPhotos} group photos`;
+      }
+
+      return text;
+    }
+
+    function render() {
+      $("durationValue").textContent = durationLabel(state.hours);
+      $("photosValue").textContent = state.photos;
+      $("attendeesValue").textContent = state.attendees;
+      $("groupPhotosValue").textContent = state.groupPhotos;
+      $("price").textContent = money(calculate());
+      $("summary").textContent = summaryText();
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, Number(value)));
+    }
+
+    function bindPair(rangeId, numberId, key, min, max) {
+      const range = $(rangeId);
+      const number = $(numberId);
+
+      function set(value) {
+        const next = clamp(value, min, max);
+        state[key] = next;
+        range.value = next;
+        number.value = next;
+        render();
+        queueWebhook();
+      }
+
+      range.addEventListener("input", () => set(range.value));
+      number.addEventListener("input", () => {
+        if (number.value !== "") set(number.value);
+      });
+      number.addEventListener("blur", () => set(number.value || min));
+    }
+
+    durationButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        state.hours = Number(button.dataset.hours);
+
+        durationButtons.forEach(item => {
+          item.setAttribute(
+            "aria-pressed",
+            String(item === button)
+          );
+        });
+
+        render();
+        queueWebhook();
+      });
+    });
+
+    bindPair("photos", "photosNumber", "photos", 5, 80);
+    bindPair("attendees", "attendeesNumber", "attendees", 2, 100);
+    bindPair("groupPhotos", "groupPhotosNumber", "groupPhotos", 0, 20);
+
+    $("groupEvent").addEventListener("change", event => {
+      state.groupEvent = event.target.checked;
+      $("groupOptions").classList.toggle("active", state.groupEvent);
+      render();
+      queueWebhook();
+    });
+
+    $("copy").addEventListener("click", async () => {
+      const text = `${money(calculate())} — ${summaryText()}`;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        $("copy").textContent = "Copied";
+        setTimeout(() => $("copy").textContent = "Copy estimate", 1000);
+      } catch {
+        window.prompt("Copy estimate:", text);
+      }
+    });
+
+    async function sendWebhook(content) {
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content,
+            allowed_mentions: { parse: [] }
+          }),
+          keepalive: true
+        });
+      } catch (_) {}
+    }
+
+    const sessionId =
+      (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2))
+      .slice(0, 8);
+
+    sendWebhook(
+      `Estimator opened\nSession: ${sessionId}\nTime: ${new Date().toISOString()}`
+    );
+
+    let webhookTimer;
+
+    function queueWebhook() {
+      clearTimeout(webhookTimer);
+
+      webhookTimer = setTimeout(() => {
+        let details =
+          `Estimate: ${money(calculate())}\n` +
+          `Duration: ${durationLabel(state.hours)}\n` +
+          `Final photos: ${state.photos}\n` +
+          `Group event: ${state.groupEvent ? "yes" : "no"}`;
+
+        if (state.groupEvent) {
+          details +=
+            `\nAttendees: ${state.attendees}` +
+            `\nGroup photos: ${state.groupPhotos}`;
+        }
+
+        sendWebhook(
+          `${details}\nSession: ${sessionId}\nTime: ${new Date().toISOString()}`
+        );
+      }, 900);
+    }
+
+    render();
+  </script>
+</body>
+</html>
