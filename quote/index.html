@@ -3,289 +3,409 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#000000">
-  <title>Shoot estimate</title>
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="Estimate a FAGDOGRAFUR photography shoot.">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <title>FAGDOGRAFUR — Shoot Estimate</title>
   <style>
     :root {
-      --bg: #000;
-      --fg: #fff;
-      --muted: #999;
-      --line: #333;
+      --accent-yellow: #ffee00;
+      --accent-blue: #00aaff;
+      --bg-dark: #111;
+      --bg-header: #1a1a1a;
+      --bg-form: #1e1e1e;
+      --bg-control: #2a2a2a;
+      --border-dark: #333;
+      --border-mid: #444;
+      --text-light: #f0f0f0;
+      --text-muted: #aaa;
     }
 
     * { box-sizing: border-box; }
 
-    html, body {
+    html { color-scheme: dark; }
+
+    body {
       margin: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Segoe UI', sans-serif;
       font-size: 16px;
     }
 
-    body {
-      min-height: 100vh;
-      padding: 24px;
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 1rem;
+      text-align: center;
+      border-bottom: 4px solid var(--border-dark);
+      background-color: rgba(26, 26, 26, 1);
+      transition: background-color 0.4s ease;
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('banner.png') center center / cover no-repeat;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    header.active { background-color: rgba(26, 26, 26, 0.4); }
+    header.active::before { opacity: 1; }
+
+    header h1 {
+      margin: 0;
+      color: var(--accent-yellow);
+      font-size: clamp(2rem, 6vw, 2.5rem);
+      letter-spacing: 0.1em;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    #title-text {
+      display: inline-block;
+      transition: opacity 0.4s ease;
+    }
+
+    .estimate-section {
+      min-height: calc(100vh - 110px);
+      padding: 3rem 1rem 4rem;
+      background: var(--bg-form);
+      border-top: 6px solid var(--accent-blue);
     }
 
     main {
       width: 100%;
-      max-width: 760px;
+      max-width: 680px;
       margin: 0 auto;
     }
 
-    h1 {
-      margin: 0 0 48px;
-      font-size: clamp(32px, 7vw, 64px);
-      line-height: 0.95;
-      letter-spacing: -0.04em;
-      font-weight: 700;
+    .intro {
+      margin: 0 0 2.25rem;
+      text-align: center;
+    }
+
+    .intro h2 {
+      margin: 0 0 0.65rem;
+      color: var(--accent-yellow);
+      font-size: 2rem;
+    }
+
+    .intro p {
+      margin: 0 auto;
+      max-width: 560px;
+      color: var(--text-muted);
+      line-height: 1.55;
     }
 
     .row {
-      padding: 24px 0;
-      border-top: 1px solid var(--line);
+      padding: 1.45rem 0;
+      border-top: 1px solid var(--border-dark);
     }
 
-    .row:last-of-type {
-      border-bottom: 1px solid var(--line);
-    }
+    .row:last-of-type { border-bottom: 1px solid var(--border-dark); }
 
     .row-head {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
       align-items: baseline;
-      margin-bottom: 18px;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
 
     label,
     .label {
+      color: var(--text-light);
       font-weight: 700;
     }
 
     .value {
-      color: var(--muted);
+      color: var(--accent-yellow);
+      font-weight: 700;
       white-space: nowrap;
     }
+
+    button,
+    input { font: inherit; }
 
     .duration {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      border: 1px solid var(--line);
-    }
-
-    button,
-    input {
-      font: inherit;
-      color: inherit;
+      gap: 0.55rem;
     }
 
     .duration button {
       min-height: 48px;
-      border: 0;
-      border-right: 1px solid var(--line);
-      background: #000;
-      color: #fff;
+      padding: 0.7rem 0.4rem;
+      border: 2px solid var(--border-mid);
+      border-radius: 9px;
+      background: var(--bg-control);
+      color: var(--text-light);
       cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
     }
 
-    .duration button:last-child {
-      border-right: 0;
+    .duration button:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent-blue);
     }
 
     .duration button[aria-pressed="true"] {
-      background: #fff;
+      border-color: var(--accent-yellow);
+      background: var(--accent-yellow);
       color: #000;
     }
 
     .range-wrap {
       display: grid;
-      grid-template-columns: 1fr 84px;
-      gap: 16px;
+      grid-template-columns: 1fr 90px;
+      gap: 1rem;
       align-items: center;
     }
 
     input[type="range"] {
       width: 100%;
-      accent-color: #fff;
+      accent-color: var(--accent-yellow);
+      cursor: pointer;
     }
 
     input[type="number"] {
       width: 100%;
       height: 44px;
-      padding: 0 10px;
-      border: 1px solid var(--line);
-      border-radius: 0;
-      background: #000;
-      color: #fff;
+      padding: 0 0.65rem;
+      border: 1px solid #666;
+      border-radius: 8px;
+      outline: none;
+      background: var(--bg-control);
+      color: var(--text-light);
       text-align: center;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.12);
     }
 
     .check-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 1rem;
       cursor: pointer;
     }
 
     input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       margin: 0;
-      accent-color: #fff;
+      accent-color: var(--accent-yellow);
+      cursor: pointer;
     }
 
     #groupOptions {
       display: none;
-      padding-top: 24px;
+      margin-top: 1.35rem;
+      padding: 1.15rem;
+      border: 1px solid var(--border-dark);
+      border-radius: 10px;
+      background: #191919;
     }
 
-    #groupOptions.active {
-      display: block;
-    }
-
-    .subrow + .subrow {
-      margin-top: 24px;
-    }
+    #groupOptions.active { display: block; }
+    .subrow + .subrow { margin-top: 1.4rem; }
 
     .total {
-      margin-top: 48px;
+      margin-top: 2.5rem;
+      padding: 1.5rem;
+      border: 2px solid var(--border-mid);
+      border-top: 6px solid var(--accent-blue);
+      border-radius: 12px;
+      background: #191919;
+      text-align: center;
     }
 
     .total-label {
-      color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.85rem;
     }
 
     .price {
-      font-size: clamp(64px, 16vw, 120px);
-      line-height: 0.9;
-      letter-spacing: -0.06em;
-      font-weight: 700;
       margin: 0;
+      color: var(--accent-yellow);
+      font-size: clamp(4rem, 16vw, 7.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      font-weight: 800;
     }
 
     .summary {
-      margin-top: 20px;
-      color: var(--muted);
+      margin-top: 1.15rem;
+      color: var(--text-muted);
       line-height: 1.5;
     }
 
     .copy {
-      margin-top: 28px;
       width: 100%;
-      min-height: 48px;
-      border: 1px solid var(--fg);
-      border-radius: 0;
-      background: #000;
-      color: #fff;
+      min-height: 52px;
+      margin-top: 1.5rem;
+      padding: 0.9rem 1rem;
+      border: none;
+      border-radius: 10px;
+      background: var(--accent-yellow);
+      color: #000;
       cursor: pointer;
-      font-weight: 700;
+      font-size: 1.1rem;
+      font-weight: 800;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
     .copy:hover {
-      background: #fff;
-      color: #000;
+      background: #cc0;
+      transform: translateY(-1px);
+    }
+
+    .copy:focus-visible,
+    .duration button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--accent-blue);
+      outline-offset: 2px;
     }
 
     @media (max-width: 640px) {
-      body { padding: 18px; }
+      header { padding: 1.6rem 0.75rem; }
+      header h1 { font-size: 2rem; }
 
-      h1 { margin-bottom: 34px; }
+      .estimate-section { padding: 2rem 1rem 3rem; }
+      .intro h2 { font-size: 1.5rem; }
 
-      .duration {
-        grid-template-columns: repeat(3, 1fr);
+      .duration { grid-template-columns: repeat(3, 1fr); }
+
+      .range-wrap {
+        grid-template-columns: 1fr 76px;
+        gap: 0.75rem;
       }
 
-      .duration button:nth-child(3) {
-        border-right: 0;
-      }
-
-      .duration button:nth-child(-n+3) {
-        border-bottom: 1px solid var(--line);
-      }
-
-      .duration button:nth-child(4),
-      .duration button:nth-child(5) {
-        border-right: 1px solid var(--line);
-      }
+      .price { font-size: clamp(3.8rem, 20vw, 6rem); }
+      .total { padding: 1.25rem 1rem; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Shoot estimate</h1>
+  <header id="main-header" aria-label="FAGDOGRAFUR header">
+    <h1><span id="title-text">FAGDOGRAFUR QUOTER</span></h1>
+  </header>
 
-    <section class="row">
-      <div class="row-head">
-        <div class="label">Duration</div>
-        <div class="value" id="durationValue">1 hour</div>
+  <section class="estimate-section">
+    <main>
+      <div class="intro">
+        <h2>Shoot Estimate</h2>
+        <p>Build a quick estimate for your session. Adjust the options below and the total updates automatically.</p>
       </div>
 
-      <div class="duration" id="durationButtons">
-        <button type="button" data-hours="0.5" aria-pressed="false">30m</button>
-        <button type="button" data-hours="1" aria-pressed="true">1h</button>
-        <button type="button" data-hours="1.5" aria-pressed="false">1.5h</button>
-        <button type="button" data-hours="2" aria-pressed="false">2h</button>
-        <button type="button" data-hours="3" aria-pressed="false">3h</button>
-        <button type="button" data-hours="4" aria-pressed="false">4h</button>
-      </div>
-    </section>
-
-    <section class="row">
-      <div class="row-head">
-        <label for="photos">Final exported photos</label>
-        <div class="value" id="photosValue">12</div>
-      </div>
-
-      <div class="range-wrap">
-        <input id="photos" type="range" min="5" max="80" value="12" step="1">
-        <input id="photosNumber" type="number" min="5" max="80" value="12" step="1">
-      </div>
-    </section>
-
-    <section class="row">
-      <label class="check-row" for="groupEvent">
-        <span>Group event</span>
-        <input id="groupEvent" type="checkbox">
-      </label>
-
-      <div id="groupOptions">
-        <div class="subrow">
-          <div class="row-head">
-            <label for="attendees">Attendees</label>
-            <div class="value" id="attendeesValue">20</div>
-          </div>
-          <div class="range-wrap">
-            <input id="attendees" type="range" min="2" max="100" value="20" step="1">
-            <input id="attendeesNumber" type="number" min="2" max="100" value="20" step="1">
-          </div>
+      <section class="row">
+        <div class="row-head">
+          <div class="label">Duration</div>
+          <div class="value" id="durationValue">1 hour</div>
         </div>
 
-        <div class="subrow">
-          <div class="row-head">
-            <label for="groupPhotos">Group photos</label>
-            <div class="value" id="groupPhotosValue">3</div>
+        <div class="duration" id="durationButtons">
+          <button type="button" data-hours="0.5" aria-pressed="false">30m</button>
+          <button type="button" data-hours="1" aria-pressed="true">1h</button>
+          <button type="button" data-hours="1.5" aria-pressed="false">1.5h</button>
+          <button type="button" data-hours="2" aria-pressed="false">2h</button>
+          <button type="button" data-hours="3" aria-pressed="false">3h</button>
+          <button type="button" data-hours="4" aria-pressed="false">4h</button>
+        </div>
+      </section>
+
+      <section class="row">
+        <div class="row-head">
+          <label for="photos">Final exported photos</label>
+          <div class="value" id="photosValue">12</div>
+        </div>
+
+        <div class="range-wrap">
+          <input id="photos" type="range" min="5" max="80" value="12" step="1">
+          <input id="photosNumber" type="number" min="5" max="80" value="12" step="1">
+        </div>
+      </section>
+
+      <section class="row">
+        <label class="check-row" for="groupEvent">
+          <span>Group event</span>
+          <input id="groupEvent" type="checkbox">
+        </label>
+
+        <div id="groupOptions">
+          <div class="subrow">
+            <div class="row-head">
+              <label for="attendees">Attendees</label>
+              <div class="value" id="attendeesValue">20</div>
+            </div>
+            <div class="range-wrap">
+              <input id="attendees" type="range" min="2" max="100" value="20" step="1">
+              <input id="attendeesNumber" type="number" min="2" max="100" value="20" step="1">
+            </div>
           </div>
-          <div class="range-wrap">
-            <input id="groupPhotos" type="range" min="0" max="20" value="3" step="1">
-            <input id="groupPhotosNumber" type="number" min="0" max="20" value="3" step="1">
+
+          <div class="subrow">
+            <div class="row-head">
+              <label for="groupPhotos">Group photos</label>
+              <div class="value" id="groupPhotosValue">3</div>
+            </div>
+            <div class="range-wrap">
+              <input id="groupPhotos" type="range" min="0" max="20" value="3" step="1">
+              <input id="groupPhotosNumber" type="number" min="0" max="20" value="3" step="1">
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="total">
-      <div class="total-label">Estimated total</div>
-      <p class="price" id="price">$215</p>
-      <div class="summary" id="summary"></div>
-      <button type="button" class="copy" id="copy">Copy estimate</button>
-    </section>
-  </main>
+      <section class="total" aria-live="polite">
+        <div class="total-label">Estimated total</div>
+        <p class="price" id="price">$215</p>
+        <div class="summary" id="summary"></div>
+        <button type="button" class="copy" id="copy">Copy estimate</button>
+      </section>
+    </main>
+  </section>
 
   <script>
+    const header = document.getElementById('main-header');
+    const titleSpan = document.getElementById('title-text');
+    const originalText = titleSpan.textContent;
+    const altText = "🏳️‍🌈+🦮=📸";
+    let headerPinned = false;
+
+    function setHeader(active) {
+      header.classList.toggle('active', active);
+      titleSpan.style.opacity = 0;
+      setTimeout(() => {
+        titleSpan.textContent = active ? altText : originalText;
+        titleSpan.style.opacity = 1;
+      }, 200);
+    }
+
+    header.addEventListener('mouseenter', () => setHeader(true));
+    header.addEventListener('mouseleave', () => setHeader(headerPinned));
+    header.addEventListener('click', () => {
+      headerPinned = !headerPinned;
+      setHeader(headerPinned);
+    });
+
     const WEBHOOK_URL =
       "https://discord.com/api/webhooks/1557506619666075658/XjeBIcC6G9I5mRl-DB93sws-RT_4Fw7hq5WO7xQs_XsFDTVDxK7ce3YoXqoL48W9oNpn";
 
