@@ -301,6 +301,90 @@
       .price { font-size: clamp(3.8rem, 20vw, 6rem); }
       .total { padding: 1.25rem 1rem; }
     }
+
+    /* Full-page terms view; it is never shown after a fresh reload. */
+    #termsPage { display: none; }
+    body.show-terms #main-header,
+    body.show-terms .estimate-section { display: none; }
+    body.show-terms #termsPage { display: block; }
+
+    .terms-link-wrap {
+      margin-top: 2.3rem;
+      padding-top: 0.35rem;
+      text-align: center;
+    }
+    .terms-cta-label {
+      margin-bottom: 0.4rem;
+      color: var(--accent-yellow);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+    .terms-arrow-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.55rem;
+      margin-bottom: 0.65rem;
+      color: var(--accent-yellow);
+      font-size: 1.65rem;
+      line-height: 1;
+      font-weight: 900;
+      animation: terms-bounce 1.2s ease-in-out infinite;
+    }
+    .terms-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0.95rem 1.4rem;
+      border: 2px solid var(--accent-yellow);
+      border-radius: 12px;
+      background: var(--accent-yellow);
+      color: #000;
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 0 0 4px rgba(255, 238, 0, 0.12);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .terms-link:hover {
+      background: #fff266;
+      transform: translateY(-1px);
+      box-shadow: 0 0 0 4px rgba(255, 238, 0, 0.18);
+    }
+    .terms-link:focus-visible,
+    .return-button:focus-visible { outline: 3px solid var(--accent-blue); outline-offset: 3px; }
+    @keyframes terms-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+    .terms-page {
+      min-height: 100vh;
+      padding: 3rem 1rem 4rem;
+      border-top: 6px solid var(--accent-blue);
+      background: var(--bg-form);
+    }
+    .terms-page main { max-width: 680px; }
+    .terms-page h2 { margin: 0 0 2rem; color: var(--accent-yellow); font-size: clamp(1.6rem, 5vw, 2rem); }
+    .terms-page h3 { margin: 0 0 0.6rem; color: var(--text-light); font-size: 1.05rem; }
+    .terms-page p { margin: 0; color: var(--text-muted); line-height: 1.65; }
+    .terms-page a { color: var(--accent-blue); }
+    .terms-page .row { padding: 1.4rem 0; }
+    .return-button {
+      margin-top: 2rem;
+      min-height: 48px;
+      padding: 0.7rem 1.4rem;
+      border: 0;
+      border-radius: 9px;
+      background: var(--accent-yellow);
+      color: #000;
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .return-button:hover { background: #cc0; }
   </style>
 </head>
 <body>
@@ -380,10 +464,54 @@
         <div class="summary" id="summary"></div>
         <button type="button" class="copy" id="copy">Copy estimate</button>
       </section>
+      <div class="terms-link-wrap">
+        <div class="terms-cta-label">Read before booking</div>
+        <div class="terms-arrow-row" aria-hidden="true">
+          <span>↓</span>
+          <span>↓</span>
+          <span>↓</span>
+        </div>
+        <button type="button" class="terms-link" id="openTerms">Terms and Conditions</button>
+      </div>
+    </main>
+  </section>
+
+  <section class="terms-page" id="termsPage" aria-labelledby="termsTitle" hidden>
+    <main>
+      <h2 id="termsTitle" tabindex="-1">Terms and Conditions</h2>
+
+      <div class="row">
+        <h3>Photo license</h3>
+        <p>All delivered photos are provided under the
+          <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</a>
+          license, unless different terms are agreed in writing. You may share unaltered photos for noncommercial purposes with proper attribution. Commercial use and sharing edited or altered versions require separate permission.</p>
+      </div>
+
+      <div class="row">
+        <h3>RAW files</h3>
+        <p>RAW files and other unedited source files are not provided. Your deliverables are the final exported photos.</p>
+      </div>
+
+      <button type="button" class="return-button" id="returnToEstimate">Return to estimate</button>
     </main>
   </section>
 
   <script>
+    const termsPage = document.getElementById('termsPage');
+    const openTerms = document.getElementById('openTerms');
+    const returnToEstimate = document.getElementById('returnToEstimate');
+
+    function showTerms(show) {
+      termsPage.hidden = !show;
+      document.body.classList.toggle('show-terms', show);
+      window.scrollTo(0, 0);
+      if (show) document.getElementById('termsTitle').focus({ preventScroll: true });
+      else openTerms.focus({ preventScroll: true });
+    }
+
+    openTerms.addEventListener('click', () => showTerms(true));
+    returnToEstimate.addEventListener('click', () => showTerms(false));
+
     const header = document.getElementById('main-header');
     const titleSpan = document.getElementById('title-text');
     const originalText = titleSpan.textContent;
