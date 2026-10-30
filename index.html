@@ -1,173 +1,158 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta name="description" content="Official page of the FAGDOGRAFUR photography studio by Zoom Fiscon, schedule a shoot today! We mainly do shoots for furries.">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FAGDOGRAFUR</title>
-  <meta property="og:image" content="https://photo.fiscon.cc/fisphot.png" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://photo.fiscon.cc/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>10-29-2026</title>
+
+  <meta property="og:image" content="https://photos.fiscon.cc/Farmers-10-29-26/cover.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://photo.fiscon.cc/fisphot.png" />
+  <meta name="twitter:image" content="https://photos.fiscon.cc/Farmers-10-29-26/cover.jpg" />
+
   <style>
-    :root {
-      --accent-yellow: #ffee00;
-      --accent-blue: #00aaff;
-      --bg-dark: #111;
-      --bg-form: #1e1e1e;
-      --border-dark: #333;
-      --text-light: #f0f0f0;
-      --scroll-gap: 2rem;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; background-color: var(--bg-dark); font-family: 'Segoe UI', sans-serif; color: var(--text-light); }
-    header { position: relative; z-index: 1; padding: 2rem 1rem; text-align: center; border-bottom: 4px solid var(--border-dark); margin-bottom: 1rem; background-color: rgba(26, 26, 26, 1); transition: background-color 0.4s ease; overflow: hidden; cursor: pointer; }
-    header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('banner.png') center center / cover no-repeat; z-index: -1; opacity: 0; transition: opacity 0.4s ease; }
-    header.active { background-color: rgba(26, 26, 26, 0.4); }
-    header.active::before { opacity: 1; }
-    header h1 { font-size: 2.5rem; color: var(--accent-yellow); letter-spacing: 0.1em; margin: 0; }
-    #title-text { display: inline-block; transition: opacity 0.4s ease; }
-    .gallery-row { overflow: hidden; position: relative; padding: 1rem 0; }
-    .gallery-track { display: flex; gap: var(--scroll-gap); width: fit-content; animation: scroll-left 30s linear infinite; }
-    .gallery-row[data-speed="0.7"] .gallery-track { animation-duration: 45s; }
-    .gallery-row[data-speed="1.3"] .gallery-track { animation-duration: 25s; }
-    @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .gallery-track img { height: 300px; width: auto; flex-shrink: 0; border-radius: 10px; border: 2px solid #444; transition: transform 0.3s; }
-    .gallery-track img:hover { transform: scale(1.05); border-color: var(--accent-blue); }
-    section.form-section { background: var(--bg-form); padding: 3rem 1rem; border-top: 6px solid var(--accent-blue); }
-    section h2 { text-align: center; color: var(--accent-yellow); margin-bottom: 2rem; font-size: 2rem; }
-    form { max-width: 600px; margin: auto; display: flex; flex-direction: column; gap: 1rem; }
-    label { font-weight: bold; color: var(--text-light); }
-    input, textarea { padding: 0.75rem; border: 1px solid #666; border-radius: 8px; font-size: 1rem; background-color: #2a2a2a; color: var(--text-light); }
-    button { padding: 1rem; background-color: var(--accent-yellow); color: #000; border: none; font-size: 1.2rem; font-weight: bold; border-radius: 10px; cursor: pointer; transition: background 0.3s; }
-    button:hover { background-color: #cc0; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    header { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    h1 { margin:0; font-size: 22px; }
+    #status { color:#555; font-size: 14px; }
+    .grid { margin-top: 16px; display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+    .card { border: 1px solid #e6e6e6; border-radius: 14px; overflow:hidden; background:#fff; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .thumb { width:100%; height: 160px; object-fit: cover; display:block; background:#fafafa; }
+    .meta { padding: 10px; display:flex; flex-direction:column; gap:8px; }
+    .name { font-size: 13px; color:#222; word-break: break-word; }
+    .actions { display:flex; gap:8px; }
+    .actions a { flex:1; text-align:center; padding: 8px 10px; border-radius: 10px; text-decoration:none; border:1px solid #ddd; color:#111; }
+    .actions a:hover { background:#f6f6f6; }
 
-    /* Bold terms link, matching the quoter page. */
-    .terms-link-wrap { margin: 2.3rem auto 0; max-width: 600px; text-align: center; padding: 0.35rem 0 0; }
-    .terms-cta-label { margin-bottom: 0.4rem; color: var(--accent-yellow); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
-    .terms-arrow-row { display: flex; justify-content: center; gap: 0.55rem; margin-bottom: 0.65rem; color: var(--accent-yellow); font-size: 1.65rem; line-height: 1; font-weight: 900; animation: terms-bounce 1.2s ease-in-out infinite; }
-    @keyframes terms-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
-    .terms-link { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0.95rem 1.4rem; border: 2px solid var(--accent-yellow); border-radius: 12px; background: var(--accent-yellow); color: #000; font-weight: 900; font-size: 1rem; letter-spacing: 0.04em; text-transform: uppercase; box-shadow: 0 0 0 4px rgba(255,238,0,0.12); cursor: pointer; transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease; }
-    .terms-link:hover { background: #fff266; transform: translateY(-1px); box-shadow: 0 0 0 4px rgba(255,238,0,.18); }
-    .terms-link:focus-visible, .return-button:focus-visible { outline: 3px solid var(--accent-blue); outline-offset: 3px; }
-
-    /* Full-page terms view: reset on every reload, no persistent storage. */
+    /* Terms and Conditions additions: styled to match the gallery. */
+    .terms-link-wrap { margin-top: 16px; }
+    .terms-button { padding: 8px 10px; border-radius: 10px; border: 1px solid #ddd; background: #fff; color: #111; font: inherit; font-size: 14px; cursor: pointer; }
+    .terms-button:hover { background: #f6f6f6; }
+    .terms-button:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
     #termsPage[hidden] { display: none; }
-    body.show-terms #homePage { display: none; }
-    .terms-page { min-height: 100vh; padding: 3rem 1rem 4rem; border-top: 6px solid var(--accent-blue); background: var(--bg-form); }
-    .terms-page main { max-width: 680px; margin: 0 auto; }
-    .terms-page h2 { margin: 0 0 2rem; color: var(--accent-yellow); text-align: left; font-size: clamp(1.6rem,5vw,2rem); }
-    .terms-page h3 { margin: 0 0 .6rem; color: var(--text-light); font-size: 1.05rem; }
-    .terms-page p { margin: 0; color: #aaa; line-height: 1.65; }
-    .terms-page a { color: var(--accent-blue); }
-    .terms-page .row { padding: 1.4rem 0; border-top: 1px solid var(--border-dark); }
-    .return-button { margin-top: 2rem; min-height: 48px; padding: .7rem 1.4rem; font-size: 1rem; font-weight: 800; }
-
-    @media (max-width: 600px) {
-      header h1 { font-size: 2rem; }
-      .gallery-track img { height: 180px; }
-      section.form-section { padding: 2rem 1rem; }
-      section h2 { font-size: 1.5rem; }
-      form { width: 100%; }
-    }
-    @media (prefers-reduced-motion: reduce) { .terms-arrow-row { animation: none; } }
+    body.show-terms #galleryPage { display: none; }
+    .terms-page { max-width: 680px; margin: 0 auto; }
+    .terms-page h2 { margin: 0 0 24px; font-size: 22px; }
+    .terms-page h3 { margin: 0 0 8px; font-size: 17px; }
+    .terms-page p { margin: 0; color: #555; line-height: 1.65; }
+    .terms-page a { color: #1769aa; }
+    .terms-page .terms-row { padding: 20px 0; border-top: 1px solid #e6e6e6; }
+    .terms-page .terms-button { margin-top: 20px; }
   </style>
 </head>
 <body>
-  <div id="homePage">
-    <header id="main-header">
-      <h1><span id="title-text">FAGDOGRAFUR</span></h1>
+  <div id="galleryPage">
+    <header>
+      <h1 id="title">10-29-2026</h1>
+      <div id="status">Loading…</div>
     </header>
 
-    <div class="gallery-row" data-speed="1">
-      <div class="gallery-track">
-        <img src="dog1.png"/><img src="dog2.png"/><img src="dog3.png"/><img src="dog4.png"/><img src="dog5.png"/>
-        <img src="dog1.png"/><img src="dog2.png"/><img src="dog3.png"/><img src="dog4.png"/><img src="dog5.png"/>
-      </div>
-    </div>
-    <div class="gallery-row" data-speed="0.7">
-      <div class="gallery-track">
-        <img src="dog6.png"/><img src="dog7.png"/><img src="dog8.png"/><img src="dog9.png"/><img src="dog10.png"/>
-        <img src="dog6.png"/><img src="dog7.png"/><img src="dog8.png"/><img src="dog9.png"/><img src="dog10.png"/>
-      </div>
-    </div>
-    <div class="gallery-row" data-speed="1.3">
-      <div class="gallery-track">
-        <img src="dog11.png"/><img src="dog12.png"/><img src="dog13.png"/><img src="dog14.png"/><img src="dog15.png"/>
-        <img src="dog11.png"/><img src="dog12.png"/><img src="dog13.png"/><img src="dog14.png"/><img src="dog15.png"/>
-      </div>
+    <div class="terms-link-wrap">
+      <button type="button" class="terms-button" id="openTerms">Terms and Conditions</button>
     </div>
 
-    <section class="form-section">
-      <h2>Request a Shoot</h2>
-      <form id="shoot-form">
-        <label>Human Name:</label>
-        <input name="human_name" required />
-        <label>Email Contact:</label>
-        <input type="email" name="email" required />
-        <label>Fursona Name:</label>
-        <input name="fursona_name" required />
-        <label>Convention or Proposed Shoot Location:</label>
-        <input name="location" required />
-        <label>Describe what you are hoping to get out of the shoot:</label>
-        <textarea name="description" rows="5" required></textarea>
-        <label>Preferred Dates:</label>
-        <input name="dates" />
-        <label>Social Media Handles (optional):</label>
-        <input name="socials" />
-        <button type="submit">Submit Request</button>
-      </form>
-      <div class="terms-link-wrap">
-        <div class="terms-cta-label">Read before booking</div>
-        <div class="terms-arrow-row" aria-hidden="true"><span>↓</span><span>↓</span><span>↓</span></div>
-        <button type="button" class="terms-link" id="openTerms">Terms and Conditions</button>
-      </div>
-    </section>
+    <div id="grid" class="grid"></div>
   </div>
 
   <section class="terms-page" id="termsPage" aria-labelledby="termsTitle" hidden>
     <main>
       <h2 id="termsTitle" tabindex="-1">Terms and Conditions</h2>
-      <div class="row">
+      <div class="terms-row">
         <h3>Photo license</h3>
         <p>All delivered photos are provided under the
           <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</a>
           license, unless different terms are agreed in writing. You may share unaltered photos for noncommercial purposes with proper attribution. Commercial use and sharing edited or altered versions require separate permission.</p>
       </div>
-      <div class="row">
+      <div class="terms-row">
         <h3>RAW files</h3>
         <p>RAW files and other unedited source files are not provided. Your deliverables are the final exported photos.</p>
       </div>
-      <button type="button" class="return-button" id="returnToHome">Return to main page</button>
+      <button type="button" class="terms-button" id="returnToHome">Return to main page</button>
     </main>
   </section>
 
   <script>
-    const header = document.getElementById('main-header');
-    const titleSpan = document.getElementById('title-text');
-    const originalText = titleSpan.textContent;
-    const altText = "🏳️‍🌈+🦮=📸";
-    let isActive = false;
+    const grid = document.getElementById("grid");
+    const statusEl = document.getElementById("status");
+    const titleEl = document.getElementById("title");
 
-    header.addEventListener("mouseenter", () => {
-      header.classList.add("active");
-      titleSpan.style.opacity = 0;
-      setTimeout(() => { titleSpan.textContent = altText; titleSpan.style.opacity = 1; }, 200);
-    });
-    header.addEventListener("mouseleave", () => {
-      header.classList.remove("active");
-      titleSpan.style.opacity = 0;
-      setTimeout(() => { titleSpan.textContent = originalText; titleSpan.style.opacity = 1; }, 200);
-    });
-    header.addEventListener("click", () => {
-      isActive = !isActive;
-      header.classList.toggle("active", isActive);
-      titleSpan.style.opacity = 0;
-      setTimeout(() => { titleSpan.textContent = isActive ? altText : originalText; titleSpan.style.opacity = 1; }, 200);
-    });
+    // Because this index.html is INSIDE the folder, these are relative to it:
+    const MANIFEST_URL = "./manifest.json";
 
+    function isProbablyImage(name) {
+      return /\.(jpe?g|png|gif|webp|bmp|svg|avif|heic)$/i.test(name);
+    }
+
+    function addCard(filename) {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const img = document.createElement("img");
+      img.className = "thumb";
+      img.loading = "lazy";
+      img.alt = filename;
+      img.src = "./" + encodeURIComponent(filename).replaceAll("%2F", "/"); // safe-ish
+      // NOTE: if your filenames include spaces, encodeURIComponent is important.
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+
+      const nameEl = document.createElement("div");
+      nameEl.className = "name";
+      nameEl.textContent = filename;
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const open = document.createElement("a");
+      open.href = img.src;
+      open.target = "_blank";
+      open.rel = "noopener";
+      open.textContent = "Open";
+
+      const dl = document.createElement("a");
+      dl.href = img.src;
+      dl.download = filename;
+      dl.textContent = "Download";
+
+      actions.appendChild(open);
+      actions.appendChild(dl);
+
+      meta.appendChild(nameEl);
+      meta.appendChild(actions);
+
+      card.appendChild(img);
+      card.appendChild(meta);
+
+      grid.appendChild(card);
+    }
+
+    async function main() {
+      try {
+        const res = await fetch(MANIFEST_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load manifest.json (HTTP ${res.status})`);
+
+        const manifest = await res.json();
+        const title = manifest.title || "Gallery";
+        const images = Array.isArray(manifest.images) ? manifest.images : [];
+
+        titleEl.textContent = title;
+
+        const filtered = images.filter(isProbablyImage);
+
+        statusEl.textContent = filtered.length
+          ? `Found ${filtered.length} image(s).`
+          : `No images listed in manifest.json.`;
+
+        filtered.forEach(addCard);
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Error loading manifest.json. Check file path + GitHub Pages build.";
+      }
+    }
+
+    main();
+
+    // Same terms-view behavior as the supplied original page.
     const termsPage = document.getElementById('termsPage');
     const openTerms = document.getElementById('openTerms');
     const returnToHome = document.getElementById('returnToHome');
@@ -180,21 +165,6 @@
     }
     openTerms.addEventListener('click', () => showTerms(true));
     returnToHome.addEventListener('click', () => showTerms(false));
-
-    document.getElementById('shoot-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const form = new FormData(this);
-      const fields = [];
-      for (let [key, value] of form.entries()) {
-        fields.push(`**${key.replace(/_/g, ' ')}:** ${value}`);
-      }
-      fetch("https://discord.com/api/webhooks/1557540738055536700/TNgQC2UdwspbI8hhMRSh-P7quMuP3gR9lDC7H9uvWsVGryQscl9dSs1r_Dnym5h0Gliz", {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: fields.join("\n") })
-      }).then(() => alert("Request submitted!"))
-        .catch(() => alert("There was an error. Try again later."));
-    });
   </script>
 </body>
 </html>
