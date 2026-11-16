@@ -8,7 +8,7 @@
       "id": "photo-license",
       "title": "Photo license",
       "paragraphs": [
-        "All delivered photos are provided under the Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0) license, unless different terms are agreed in writing. You may share unaltered photos for noncommercial purposes with proper attribution. Commercial use and sharing edited or altered versions require separate permission."
+        "All delivered photos are provided under the Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0) license, unless different terms are agreed in writing."
       ],
       "links": [
         {
@@ -18,18 +18,40 @@
       ]
     },
     {
+      "id": "photo-usage",
+      "title": "Photo usage",
+      "paragraphs": [
+        "You may share unaltered photos for noncommercial purposes with proper attribution. Commercial use and sharing edited or altered versions require separate permission."
+      ]
+    },
+    {
       "id": "raw-files",
       "title": "RAW files",
       "paragraphs": [
-        "RAW files and other unedited source files are not provided. Your deliverables are the final exported photos."
+        "RAW files and other unedited source files are not provided."
       ]
     }
   ],
   "destinations": [
     {
       "name": "Bowling — November 14, 2026",
-      "description": "Photo gallery",
+      "description": "CPFC Bowling Night",
       "url": "https://photos.fiscon.cc/bowling-11-14-26/"
+    },
+    {
+      "name": "Farmers — October 29, 2026",
+      "description": "Halloween Farmers Meet",
+      "url": "https://photos.fiscon.cc/Farmers-10-29-26/"
+    },
+    {
+      "name": "Pumpkin Patch — October 18, 2026",
+      "description": "CPFC Meet at Avila Barn",
+      "url": "https://photos.fiscon.cc/avilafarm-10-18-26/"
+    },
+    {
+      "name": "Photography #2 — October 18, 2026",
+      "description": "CPFC Photography Meet",
+      "url": "https://photos.fiscon.cc/CPFC-10-09-26/"
     },
     {
       "name": "Creative Commons license",
