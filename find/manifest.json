@@ -1,0 +1,40 @@
+{
+  "title": "Terms and Conditions",
+  "version": "2026-11-15",
+  "intro": "Please read the terms to continue",
+  "allowUnlistedRedirects": true,
+  "terms": [
+    {
+      "id": "photo-license",
+      "title": "Photo license",
+      "paragraphs": [
+        "All delivered photos are provided under the Creative Commons Attribution–NonCommercial–NoDerivatives 4.0 International (CC BY-NC-ND 4.0) license, unless different terms are agreed in writing. You may share unaltered photos for noncommercial purposes with proper attribution. Commercial use and sharing edited or altered versions require separate permission."
+      ],
+      "links": [
+        {
+          "label": "Read the CC BY-NC-ND 4.0 license",
+          "url": "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+        }
+      ]
+    },
+    {
+      "id": "raw-files",
+      "title": "RAW files",
+      "paragraphs": [
+        "RAW files and other unedited source files are not provided. Your deliverables are the final exported photos."
+      ]
+    }
+  ],
+  "destinations": [
+    {
+      "name": "Bowling — November 14, 2026",
+      "description": "Photo gallery",
+      "url": "https://photos.fiscon.cc/bowling-11-14-26/"
+    },
+    {
+      "name": "Creative Commons license",
+      "description": "Read the photography license",
+      "url": "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+    }
+  ]
+}
