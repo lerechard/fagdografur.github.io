@@ -363,7 +363,7 @@
         open.href = item.url.href;
         const copy = document.createElement('button');
         copy.type = 'button';
-        copy.textContent = 'Copy agreement link';
+        copy.textContent = 'Copy link';
         copy.addEventListener('click', () => copyShareLink(item.url));
         actions.append(open, copy);
         meta.appendChild(actions);
