@@ -177,6 +177,7 @@
   <script>
     'use strict';
     const MANIFEST_URL = './manifest.json';
+    const PHOTOS_ORIGIN = 'https://photos.fiscon.cc';
     const $ = (id) => document.getElementById(id);
     const termsPage = $('termsPage');
     const searchPage = $('searchPage');
@@ -201,9 +202,20 @@
     function getRequestedDestination() {
       const params = new URLSearchParams(window.location.search);
       if (!params.has('to')) return { url: null, issue: null };
-      const url = safeUrl(params.get('to'));
+      const value = params.get('to');
+
+      // A short tag is a path on photos.fiscon.cc (not a separate hostname).
+      // Restrict shortcuts to plain path segments so they can't point off-site.
+      const isPhotoShortcut = typeof value === 'string' &&
+        /^[a-z0-9_-]+(?:\/[a-z0-9_-]+)*\/?$/i.test(value);
+      const url = isPhotoShortcut
+        ? new URL(value, `${PHOTOS_ORIGIN}/`)
+        : safeUrl(value); // Keep supporting existing full-URL links.
+
       if (!url) return { url: null, issue: 'The link in the URL is invalid. You can still browse the destination list after confirming the terms.' };
-      if (manifest.allowUnlistedRedirects !== true &&
+      // Short tags always stay on our photos domain. Continue to check the
+      // manifest before redirecting to other, fully specified URLs.
+      if (!isPhotoShortcut && manifest.allowUnlistedRedirects !== true &&
           !validDestinations.some((item) => item.url.href === url.href)) {
         return { url: null, issue: 'This destination is not listed in the manifest. You can still browse the destination list after confirming the terms.' };
       }
@@ -291,7 +303,13 @@
       const share = new URL(window.location.href);
       share.search = '';
       share.hash = '';
-      share.searchParams.set('to', url.href); // URL-encodes the destination automatically.
+      // For photo links, store only the path (e.g. bowling-11-14-26/).
+      // Full URLs are still used for destinations on other domains.
+      const path = url.pathname.slice(1);
+      const isSimplePhotoPath = url.origin === PHOTOS_ORIGIN &&
+        /^[a-z0-9_-]+(?:\/[a-z0-9_-]+)*\/?$/i.test(path) &&
+        !url.search && !url.hash;
+      share.searchParams.set('to', isSimplePhotoPath ? path : url.href);
       return share.href;
     }
 
