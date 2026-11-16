@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Terms and Conditions</title>
+  <style>
+    /* Same typography, spacing, borders, and cards as the supplied gallery. */
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 24px;
+      color: #111;
+      background: #fff;
+    }
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 22px; }
+    #status { color: #555; font-size: 14px; }
+    [hidden] { display: none !important; }
+
+    .terms-page { max-width: 680px; margin: 0 auto; }
+    .terms-page h2 { margin: 0 0 8px; font-size: 17px; }
+    .terms-page p { margin: 0; color: #555; line-height: 1.65; }
+    .terms-page a { color: #1769aa; }
+    .terms-row { padding: 20px 0; border-top: 1px solid #e6e6e6; }
+    .terms-row p + p { margin-top: 10px; }
+    .terms-links { margin-top: 10px; font-size: 14px; }
+    .intro { margin: 20px 0 24px !important; }
+    .destination-note {
+      border: 1px solid #e6e6e6;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fafafa;
+      margin-bottom: 24px;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .destination-note strong { display: block; color: #222; font-size: 14px; margin-bottom: 3px; }
+    .destination-note .destination-url { overflow-wrap: anywhere; }
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #222;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+    .check-row input { width: 17px; height: 17px; margin: 2px 0 0; accent-color: #222; flex: none; }
+    .finish-row {
+      border-top: 1px solid #e6e6e6;
+      padding-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .progress { color: #555; font-size: 14px; }
+    .terms-button, .actions a, .actions button {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #111;
+      font: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+    .terms-button:hover:not(:disabled), .actions a:hover, .actions button:hover { background: #f6f6f6; }
+    .terms-button:disabled { opacity: .45; cursor: not-allowed; }
+    .terms-button:focus-visible, .actions a:focus-visible, .actions button:focus-visible,
+    .check-row input:focus-visible, #search:focus-visible {
+      outline: 2px solid #555;
+      outline-offset: 3px;
+    }
+    .error { color: #a12828 !important; font-size: 14px; margin-top: 14px !important; }
+
+    .search-page { max-width: 920px; margin: 0 auto; }
+    .search-intro { margin: 14px 0 18px; color: #555; font-size: 14px; line-height: 1.6; }
+    .search-box {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 11px 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font: inherit;
+      font-size: 14px;
+    }
+    .search-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid #e6e6e6;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .meta { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .name { font-size: 14px; color: #222; font-weight: 600; word-break: break-word; }
+    .description { color: #555; font-size: 13px; line-height: 1.5; }
+    .url { color: #666; font-size: 12px; overflow-wrap: anywhere; }
+    .actions { display: flex; gap: 8px; margin-top: 5px; }
+    .actions a, .actions button { flex: 1; }
+    .empty { color: #555; font-size: 14px; margin-top: 20px; }
+    .share-feedback { font-size: 13px; color: #555; overflow-wrap: anywhere; }
+    .share-fallback { margin-top: 12px; }
+    .share-fallback label { display: block; font-size: 13px; color: #555; margin-bottom: 5px; }
+    .share-fallback input { width: 100%; box-sizing: border-box; padding: 9px; border: 1px solid #ddd; border-radius: 10px; font: inherit; font-size: 13px; }
+    @media (max-width: 420px) {
+      body { margin: 18px; }
+      .finish-row .terms-button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <section class="terms-page" id="termsPage" aria-labelledby="termsTitle">
+    <header>
+      <h1 id="termsTitle">Terms and Conditions</h1>
+      <div id="status" role="status">Loading…</div>
+    </header>
+    <main>
+      <p class="intro" id="intro">Please read and understand every section before continuing.</p>
+      <div class="destination-note" id="destinationNote" hidden>
+        <strong id="destinationHeading">After you agree, you'll continue to:</strong>
+        <div class="destination-url" id="destinationText"></div>
+      </div>
+      <div id="termsList"></div>
+      <div class="finish-row" id="finishRow" hidden>
+        <span class="progress" id="progress" aria-live="polite">0 of 0 sections confirmed</span>
+        <button type="button" class="terms-button" id="continueButton" disabled>Continue</button>
+      </div>
+      <p class="error" id="errorMessage" role="alert" hidden></p>
+    </main>
+  </section>
+
+  <section class="search-page" id="searchPage" aria-labelledby="searchTitle" hidden>
+    <header>
+      <h1 id="searchTitle" tabindex="-1">Find a link</h1>
+      <div id="resultsStatus" class="progress" aria-live="polite"></div>
+    </header>
+    <p class="search-intro">Thank you. Search the links below to choose where to go.</p>
+    <label for="search" class="progress">Search</label>
+    <input id="search" class="search-box" type="search" placeholder="Search by name, description, or URL…" autocomplete="off" />
+    <div class="search-tools">
+      <button type="button" class="terms-button" id="reviewTerms">Review terms</button>
+      <span class="share-feedback" id="shareFeedback" role="status" aria-live="polite"></span>
+    </div>
+    <div class="share-fallback" id="shareFallback" hidden>
+      <label for="shareUrl">Shareable agreement link (select and copy)</label>
+      <input id="shareUrl" type="text" readonly />
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="emptyMessage" hidden>No matching links found.</p>
+  </section>
+
+  <script>
+    'use strict';
+    const MANIFEST_URL = './manifest.json';
+    const $ = (id) => document.getElementById(id);
+    const termsPage = $('termsPage');
+    const searchPage = $('searchPage');
+    const termsList = $('termsList');
+    const continueButton = $('continueButton');
+    const grid = $('grid');
+    let manifest;
+    let destination = null;
+    let accepted = false;
+    let validDestinations = [];
+
+    function safeUrl(value) {
+      if (typeof value !== 'string' || value.length > 4096) return null;
+      try {
+        const url = new URL(value);
+        // Prevent javascript:, data:, file:, embedded credentials, etc.
+        if (!['http:', 'https:'].includes(url.protocol) || !url.hostname || url.username || url.password) return null;
+        return url;
+      } catch { return null; }
+    }
+
+    function getRequestedDestination() {
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has('to')) return { url: null, issue: null };
+      const url = safeUrl(params.get('to'));
+      if (!url) return { url: null, issue: 'The link in the URL is invalid. You can still browse the destination list after confirming the terms.' };
+      if (manifest.allowUnlistedRedirects !== true &&
+          !validDestinations.some((item) => item.url.href === url.href)) {
+        return { url: null, issue: 'This destination is not listed in the manifest. You can still browse the destination list after confirming the terms.' };
+      }
+      return { url, issue: null };
+    }
+
+    function updateProgress() {
+      const boxes = Array.from(termsList.querySelectorAll('input[type="checkbox"]'));
+      const checked = boxes.filter((box) => box.checked).length;
+      $('progress').textContent = `${checked} of ${boxes.length} sections confirmed`;
+      continueButton.disabled = checked !== boxes.length || boxes.length === 0;
+    }
+
+    function renderTerms() {
+      const title = typeof manifest.title === 'string' ? manifest.title : 'Terms and Conditions';
+      $('termsTitle').textContent = title;
+      document.title = title;
+      $('status').textContent = manifest.version ? `Version ${manifest.version}` : 'Review required';
+      $('intro').textContent = typeof manifest.intro === 'string'
+        ? manifest.intro : 'Please read and understand every section before continuing.';
+      const request = getRequestedDestination();
+      destination = request.url;
+      if (destination) {
+        $('destinationNote').hidden = false;
+        $('destinationHeading').textContent = 'After you agree, you\'ll continue to:';
+        $('destinationText').textContent = destination.href;
+      } else if (request.issue) {
+        $('destinationNote').hidden = false;
+        $('destinationHeading').textContent = 'Destination notice';
+        $('destinationText').textContent = request.issue;
+      }
+      const sections = Array.isArray(manifest.terms) ? manifest.terms : [];
+      if (!sections.length) throw new Error('No terms are defined in manifest.json.');
+
+      termsList.replaceChildren();
+      sections.forEach((section, index) => {
+        const row = document.createElement('section');
+        row.className = 'terms-row';
+        const h2 = document.createElement('h2');
+        h2.textContent = section.title || `Section ${index + 1}`;
+        row.appendChild(h2);
+
+        const paragraphs = Array.isArray(section.paragraphs) ? section.paragraphs : [section.body || ''];
+        for (const value of paragraphs) {
+          if (typeof value !== 'string' || !value.trim()) continue;
+          const p = document.createElement('p');
+          p.textContent = value;
+          row.appendChild(p);
+        }
+
+        if (Array.isArray(section.links) && section.links.length) {
+          const linksEl = document.createElement('div');
+          linksEl.className = 'terms-links';
+          section.links.forEach((link, i) => {
+            const url = safeUrl(link.url);
+            if (!url) return;
+            if (i > 0) linksEl.appendChild(document.createTextNode(' · '));
+            const a = document.createElement('a');
+            a.textContent = link.label || url.hostname;
+            a.href = url.href;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            linksEl.appendChild(a);
+          });
+          row.appendChild(linksEl);
+        }
+
+        const label = document.createElement('label');
+        label.className = 'check-row';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = `understood-${index}`;
+        checkbox.addEventListener('change', updateProgress);
+        const labelText = document.createElement('span');
+        labelText.textContent = `I have read and understand “${h2.textContent}”.`;
+        label.append(checkbox, labelText);
+        row.appendChild(label);
+        termsList.appendChild(row);
+      });
+      $('finishRow').hidden = false;
+      updateProgress();
+    }
+
+    function makeShareLink(url) {
+      const share = new URL(window.location.href);
+      share.search = '';
+      share.hash = '';
+      share.searchParams.set('to', url.href); // URL-encodes the destination automatically.
+      return share.href;
+    }
+
+    async function copyShareLink(url) {
+      const shareLink = makeShareLink(url);
+      try {
+        if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(shareLink);
+        $('shareFeedback').textContent = 'Agreement link copied.';
+        $('shareFallback').hidden = true;
+      } catch {
+        $('shareFeedback').textContent = 'Copy the agreement link below:';
+        $('shareFallback').hidden = false;
+        $('shareUrl').value = shareLink;
+        $('shareUrl').focus();
+        $('shareUrl').select();
+      }
+    }
+
+    function renderSearch(query = '') {
+      grid.replaceChildren();
+      const q = query.trim().toLocaleLowerCase();
+      const matching = validDestinations.filter((item) =>
+        [item.name, item.description, item.url.href].join(' ').toLocaleLowerCase().includes(q));
+      $('resultsStatus').textContent = `${matching.length} link${matching.length === 1 ? '' : 's'} found`;
+      $('emptyMessage').hidden = matching.length !== 0;
+
+      for (const item of matching) {
+        const card = document.createElement('article');
+        card.className = 'card';
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const name = document.createElement('div');
+        name.className = 'name';
+        name.textContent = item.name;
+        meta.appendChild(name);
+        if (item.description) {
+          const description = document.createElement('div');
+          description.className = 'description';
+          description.textContent = item.description;
+          meta.appendChild(description);
+        }
+        const url = document.createElement('div');
+        url.className = 'url';
+        url.textContent = item.url.href;
+        meta.appendChild(url);
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+        const open = document.createElement('a');
+        open.textContent = 'Open';
+        open.href = item.url.href;
+        const copy = document.createElement('button');
+        copy.type = 'button';
+        copy.textContent = 'Copy agreement link';
+        copy.addEventListener('click', () => copyShareLink(item.url));
+        actions.append(open, copy);
+        meta.appendChild(actions);
+        card.appendChild(meta);
+        grid.appendChild(card);
+      }
+    }
+
+    function showSearch() {
+      termsPage.hidden = true;
+      searchPage.hidden = false;
+      $('shareFeedback').textContent = '';
+      renderSearch($('search').value);
+      window.scrollTo(0, 0);
+      $('searchTitle').focus({ preventScroll: true });
+    }
+
+    continueButton.addEventListener('click', () => {
+      if (continueButton.disabled) return;
+      accepted = true;
+      if (destination) window.location.assign(destination.href);
+      else showSearch();
+    });
+    $('search').addEventListener('input', (event) => renderSearch(event.target.value));
+    $('reviewTerms').addEventListener('click', () => {
+      searchPage.hidden = true;
+      termsPage.hidden = false;
+      window.scrollTo(0, 0);
+      $('termsTitle').setAttribute('tabindex', '-1');
+      $('termsTitle').focus({ preventScroll: true });
+    });
+
+    async function main() {
+      try {
+        const response = await fetch(MANIFEST_URL, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Could not load manifest.json (HTTP ${response.status}).`);
+        manifest = await response.json();
+        validDestinations = (Array.isArray(manifest.destinations) ? manifest.destinations : [])
+          .map((item) => ({
+            name: String(item.name || 'Untitled link'),
+            description: String(item.description || ''),
+            url: safeUrl(item.url)
+          }))
+          .filter((item) => item.url);
+        renderTerms();
+      } catch (error) {
+        console.error(error);
+        $('status').textContent = 'Unable to load terms';
+        $('errorMessage').textContent = `${error.message} Check that manifest.json is in the same folder as index.html and that the website is hosted over HTTP or HTTPS.`;
+        $('errorMessage').hidden = false;
+        continueButton.disabled = true;
+      }
+    }
+    main();
+  </script>
+</body>
+</html>
